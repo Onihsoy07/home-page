@@ -21,6 +21,6 @@ public class Board extends Base {
 
     @Lob
     @Column(nullable = false, unique = false)
-    private String Contents;
+    private String contents;
 
 }
