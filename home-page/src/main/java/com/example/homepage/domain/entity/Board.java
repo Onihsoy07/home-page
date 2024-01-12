@@ -1,5 +1,6 @@
 package com.example.homepage.domain.entity;
 
+import com.example.homepage.domain.dto.BoardUpdateDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -22,5 +23,10 @@ public class Board extends Base {
     @Lob
     @Column(nullable = false, unique = false)
     private String contents;
+
+    public void updateBoard(BoardUpdateDto boardUpdateDto) {
+        this.title = boardUpdateDto.getTitle();
+        this.contents = boardUpdateDto.getContents();
+    }
 
 }
