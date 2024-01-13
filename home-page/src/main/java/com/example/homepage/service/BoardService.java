@@ -34,7 +34,7 @@ public class BoardService {
     }
 
     @Transactional(readOnly = true)
-    public BoardDto findByBoard(Long boardId) {
+    public BoardDto getBoard(Long boardId) {
         return new BoardDto(findByBoardEntity(boardId));
     }
 
