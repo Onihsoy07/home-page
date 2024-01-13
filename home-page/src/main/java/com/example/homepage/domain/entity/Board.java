@@ -3,6 +3,7 @@ package com.example.homepage.domain.entity;
 import com.example.homepage.domain.dto.BoardUpdateDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,6 +24,12 @@ public class Board extends Base {
     @Lob
     @Column(nullable = false, unique = false)
     private String contents;
+
+    @Builder
+    public Board(String title, String contents) {
+        this.title = title;
+        this.contents = contents;
+    }
 
     public void updateBoard(BoardUpdateDto boardUpdateDto) {
         this.title = boardUpdateDto.getTitle();
