@@ -1,6 +1,7 @@
 package com.example.homepage.service;
 
 import com.example.homepage.domain.dto.BoardDto;
+import com.example.homepage.domain.dto.BoardSaveDto;
 import com.example.homepage.domain.dto.BoardUpdateDto;
 import com.example.homepage.domain.entity.Board;
 import com.example.homepage.domain.repository.BoardRepository;
@@ -18,6 +19,14 @@ import java.util.List;
 public class BoardService {
 
     private final BoardRepository boardRepository;
+
+    public void saveBoard(BoardSaveDto boardSaveDto) {
+        Board board = Board.builder()
+                .title(boardSaveDto.getTitle())
+                .contents(boardSaveDto.getContents())
+                .build();
+        boardRepository.save(board);
+    }
 
     @Transactional(readOnly = true)
     public List<BoardDto> getList() {
