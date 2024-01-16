@@ -3,6 +3,7 @@ package com.example.homepage.controller.api;
 import com.example.homepage.domain.dto.BoardDto;
 import com.example.homepage.domain.dto.BoardSaveDto;
 import com.example.homepage.domain.dto.BoardUpdateDto;
+import com.example.homepage.domain.dto.HttpResponseDto;
 import com.example.homepage.service.BoardService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -41,17 +42,17 @@ public class BoardApiController {
             @ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "500", description = "SERVER ERROR")
     })
-    public ResponseEntity<Void> saveBoard(@Valid @RequestBody final BoardSaveDto boardSaveDto,
-                                          BindingResult bindingResult) {
+    public HttpResponseDto<Void> saveBoard(@Valid @RequestBody final BoardSaveDto boardSaveDto,
+                                                     BindingResult bindingResult) {
         boardService.saveBoard(boardSaveDto);
-        return ResponseEntity.created(URI.create("/boards")).build();
+        return new HttpResponseDto<>(HttpStatus.CREATED, "게시물 생성 완료", null);
     }
 
     @GetMapping
     @Tag(name = "모든 게시물 조회", description = "모든 게시물 조회 가능")
-    public ResponseEntity<List<BoardDto>> getAllBoard() {
+    public HttpResponseDto<List<BoardDto>> getAllBoard() {
         List<BoardDto> boardDtoList = boardService.getList();
-        return ResponseEntity.status(HttpStatus.OK).body(boardDtoList);
+        return new HttpResponseDto<>(boardDtoList);
     }
 
     @GetMapping("/{boardId}")
@@ -61,25 +62,25 @@ public class BoardApiController {
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = BoardDto.class))),
             @ApiResponse(responseCode = "500", description = "SERVER ERROR")
     })
-    public ResponseEntity<BoardDto> getBoard(@PathVariable("boardId") final Long boardId) {
+    public HttpResponseDto<BoardDto> getBoard(@PathVariable("boardId") final Long boardId) {
         BoardDto boardDto = boardService.getBoard(boardId);
-        return ResponseEntity.status(HttpStatus.OK).body(boardDto);
+        return new HttpResponseDto<>(boardDto);
     }
 
     @PutMapping("/{boardId}")
     @Tag(name = "게시물 변경", description = "게시물 제목, 내용 변경 가능")
-    public ResponseEntity<Void> updateBoard(@PathVariable("boardId") final Long boardId,
+    public HttpResponseDto<Void> updateBoard(@PathVariable("boardId") final Long boardId,
                                             @Valid @RequestBody final BoardUpdateDto boardUpdateDto,
                                             BindingResult bindingResult) {
         boardService.updateBoard(boardId, boardUpdateDto);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return new HttpResponseDto<>(HttpStatus.OK, "게시글 수정 완료", null);
     }
 
     @DeleteMapping("/{boardId}")
     @Tag(name = "게시물 삭제", description = "게시물 삭제 가능")
-    public ResponseEntity<Void> deleteBoard(@PathVariable("boardId") final Long boardId) {
+    public HttpResponseDto<Void> deleteBoard(@PathVariable("boardId") final Long boardId) {
         boardService.deleteBoard(boardId);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return new HttpResponseDto<>(HttpStatus.OK, "게시글 삭제 완료", null);
     }
 
 
