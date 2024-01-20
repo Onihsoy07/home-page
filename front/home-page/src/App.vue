@@ -27,7 +27,10 @@ const data = reactive({
 function getBoardList() {
   fetch('http://localhost:9000/boards')
   .then(response => response.json())
-  .then(response => data.boardList = response.data)
+  .then(response => {
+    data.boardList = response.data;
+    console.log('get ', response);
+  });
 }
 
 function saveBoard() {
@@ -39,7 +42,12 @@ function saveBoard() {
     body: JSON.stringify(data)
   })
   .then(response => response.json())
-  .then(response => data.boardList = response.data);
+  .then(response => {
+    data.boardList = response.data;
+    console.log('post ', response);
+    getBoardList();
+  })
+  .catch(error => console.log(error));
 }
 
 onMounted(() => {
